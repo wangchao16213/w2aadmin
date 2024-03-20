@@ -1,0 +1,14 @@
+.loginItem {
+    flex: 1;
+    width: 350px;
+    margin-top: 10px !important;
+}
+
+
+.loginBtn{
+    height: 35px;
+    width: 100px;
+    margin-top: 10px !important;
+    /*margin-left: 60px !important;*/
+    align-self: self-start;
+}
