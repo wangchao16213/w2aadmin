@@ -3,23 +3,24 @@ import {Alert, Button, Card, CardContent, Fade, TextField, Typography} from "@mu
 import classes from './Login.module.css';
 import {useState} from "react";
 import Title from "@/Components/base/Title/Title.jsx";
+import {router} from "@inertiajs/react";
 
 export default function Register() {
 
-    const [formData,setFormData] = useState({'email':'','password':'','repassword':''});
+    const [formData, setFormData] = useState({'email': '', 'password': '', 'repassword': ''});
     const [showAlert, setShowAlert] = useState(false);
     const [msg, setMsg] = useState({type: 'success', text: ''});
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(formData);
-        if (formData.email == '' || formData.password == ''){
+        if (formData.email == '' || formData.password == '') {
             setMsg({type: 'error', text: '用户名或者密码不能为空'});
             setShowAlert(true);
             return;
         }
 
-        if (formData.password !== formData.repassword){
+        if (formData.password !== formData.repassword) {
             setMsg({type: 'error', text: '两次密码输入不一致'});
             setShowAlert(true);
             return;
@@ -27,16 +28,22 @@ export default function Register() {
 
 
         axios.post('/doRegister', formData).then(function (res) {
+
             var data = res.data;
-            setMsg({type: 'error', text: data.msg});
-            setShowAlert(true);
+            if (data.code != 0) {
+                setMsg({type: 'error', text: data.msg});
+                setShowAlert(true);
+            } else {
+                router.visit('/login')
+            }
+
         });
 
 
     }
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     }
 
     return (
@@ -58,9 +65,11 @@ export default function Register() {
                                 <TextField className={classes.loginItem} name={"email"} type="email" label="邮箱"
                                            variant="outlined" value={formData.email} onChange={handleChange} required/>
                                 <TextField className={classes.loginItem} name={"password"} type="password"
-                                           label="密码" value={formData.password} variant="outlined" onChange={handleChange} required />
+                                           label="密码" value={formData.password} variant="outlined"
+                                           onChange={handleChange} required/>
                                 <TextField className={classes.loginItem} name={"repassword"} type="password"
-                                           label="重复密码" value={formData.repassword} variant="outlined" onChange={handleChange} required/>
+                                           label="重复密码" value={formData.repassword} variant="outlined"
+                                           onChange={handleChange} required/>
                             </Grid>
                             <Grid display={"flex"} style={{paddingLeft: 0, marginTop: 30}} justifyContent="space-evenly"
                                   alignItems="center">

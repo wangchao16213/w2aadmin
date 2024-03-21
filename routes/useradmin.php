@@ -28,7 +28,7 @@ Route::post('/doRegister', function (Request $request) {
         'user_name' => explode('@', $email)[0]
     ]);
     session(['user' => $customer]);
-    return Inertia::render('Login');
+    return ['code' => 0, 'msg' => '操作成功'];
 
 });
 
@@ -44,7 +44,7 @@ Route::post('/doLogin', function (Request $request) {
         return ['code' => -1, 'msg' => '用户名或者密码错误'];
     }
     session(['user' => $customer]);
-    return Inertia::render('Index');;
+    return ['code' => 0, 'msg' => '操作成功'];
 
 });
 
@@ -62,9 +62,16 @@ Route::get('/register', function () {
 
 
 
-Route::middleware('myauth')->prefix("admin")->group(function () {
+//Route::middleware('myauth')->prefix("admin")->group(function () {
+//    Route::get('/', function (){
+//        return Inertia::render('Index');
+//    });
+//
+//});
+
+
+Route::prefix("admin")->group(function () {
     Route::get('/', function (){
         return Inertia::render('Index');
     });
-
 });
