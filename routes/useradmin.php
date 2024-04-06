@@ -75,3 +75,4 @@ Route::prefix("admin")->group(function () {
         return Inertia::render('Index');
     });
 });
+
